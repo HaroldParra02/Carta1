@@ -106,22 +106,12 @@
   </div>
 
   <div class="controls">
-    <!-- Botón interno para reproducir/pausar audio local (si tienes MP3) -->
-    <button class="btn" id="musicButton">🎶 Reproducir música</button>
 
     <!-- Botón para abrir la pista en Spotify (abre en nueva pestaña) -->
     <a class="btn secondary" id="spotifyLink" href="https://open.spotify.com/track/35ttE4t8lQZA2vuCYDg4G7" target="_blank" rel="noopener noreferrer">
       🔊 Abrir en Spotify
     </a>
   </div>
-
-  <div class="note">Puedes usar el botón "Abrir en Spotify" para escuchar M.A.I en la app o en la web.</div>
-
-  <!-- Audio local opcional: si descargaste un MP3, cambia src a "mi_cancion.mp3" -->
-  <audio id="romanticMusic" loop>
-    <source src="https://cdn.pixabay.com/audio/2023/02/28/audio_66ecf0b9e2.mp3" type="audio/mpeg">
-    Tu navegador no soporta el audio.
-  </audio>
 
   <script>
     // Corazones flotantes
@@ -137,24 +127,7 @@
     }
     setInterval(crearCorazon, 420);
 
-    // Botón de música local
-    const button = document.getElementById('musicButton');
-    const music = document.getElementById('romanticMusic');
-    let isPlaying = false;
-    button.addEventListener('click', () => {
-      if (!isPlaying) {
-        music.play().catch(err => {
-          // Si autoplay falla (por políticas del navegador), avisamos al usuario.
-          alert('No se pudo reproducir automáticamente. Asegúrate de interactuar con la página o usa "Abrir en Spotify".');
-        });
-        button.textContent = "💞 Pausar música";
-        isPlaying = true;
-      } else {
-        music.pause();
-        button.textContent = "🎶 Reproducir música";
-        isPlaying = false;
-      }
-    });
+  
 
     // Comportamiento extra: si quieres que al hacer clic en "Abrir en Spotify" se marque visualmente:
     const spotifyLink = document.getElementById('spotifyLink');
