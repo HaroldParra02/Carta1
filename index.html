@@ -1,95 +1,135 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Carta para ti 💖</title>
     <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ffb6c1, #ffc3a0, #ffe5ec);
             height: 100vh;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             overflow: hidden;
+            position: relative;
+            color: #fff;
+        }
+
+        /* Fondo con la foto (usa 'tu_foto.jpg' en la misma carpeta) */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url('tu_foto.jpg') no-repeat center center/cover;
+            filter: blur(8px) brightness(0.65);
+            z-index: -3;
+        }
+
+        /* Capa de color suave encima de la foto */
+        body::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(255,154,158,0.18), rgba(250,208,196,0.18));
+            z-index: -2;
+        }
+
+        .overlay {
+            /* ligera capa translúcida para que el texto destaque */
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.14));
+            z-index: -1;
         }
 
         h1 {
-            color: #fff;
-            font-size: 3em;
-            animation: aparecer 3s ease-in-out infinite alternate;
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            text-shadow: 2px 4px 12px rgba(0,0,0,0.6);
+            animation: aparecer 2.4s ease both;
         }
 
         @keyframes aparecer {
-            from { opacity: 0.5; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1.05); }
+            from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         p {
-            color: #fff;
-            font-size: 1.5em;
-            max-width: 600px;
+            font-size: 1.2rem;
+            max-width: 720px;
+            line-height: 1.5;
+            margin: 0 20px;
+            text-shadow: 1px 2px 8px rgba(0,0,0,0.45);
             animation: flotar 4s ease-in-out infinite alternate;
         }
 
         @keyframes flotar {
             from { transform: translateY(0px); }
-            to { transform: translateY(-10px); }
+            to { transform: translateY(-6px); }
         }
 
-        button {
-            background-color: #1DB954; /* Verde Spotify */
+        .controls {
+            margin-top: 22px;
+            z-index: 2;
+        }
+
+        .spotify-btn {
+            background-color: #1DB954; /* verde Spotify */
+            color: #fff;
             border: none;
-            color: white;
-            font-size: 1.2em;
-            padding: 12px 25px;
+            padding: 12px 26px;
             border-radius: 30px;
+            font-size: 1.05rem;
             cursor: pointer;
-            margin-top: 25px;
-            transition: transform 0.3s, background 0.3s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        button:hover {
-            background-color: #1ed760;
-            transform: scale(1.1);
+        .spotify-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 26px rgba(0,0,0,0.45);
         }
 
+        /* Corazones detrás (no sobre la foto directamente) */
         .corazones {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
             overflow: hidden;
-            z-index: -1;
         }
-
         .corazon {
             position: absolute;
-            color: #ff4d6d;
             font-size: 20px;
             animation: subir 6s linear infinite;
-            opacity: 0.7;
+            opacity: 0.78;
+        }
+        @keyframes subir {
+            0% { transform: translateY(100vh) scale(0.9); opacity: 1; }
+            100% { transform: translateY(-20vh) scale(1.4); opacity: 0; }
         }
 
-        @keyframes subir {
-            from {
-                transform: translateY(100vh) scale(1);
-                opacity: 1;
-            }
-            to {
-                transform: translateY(-10vh) scale(1.5);
-                opacity: 0;
-            }
+        /* Responsive pequeño */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.9rem; }
+            p { font-size: 1rem; }
+            .spotify-btn { padding: 10px 18px; font-size: 0.95rem; }
         }
     </style>
 </head>
 <body>
-    <div class="corazones"></div>
+    <div class="overlay"></div>
+
+    <div class="corazones" aria-hidden="true"></div>
 
     <h1>Para ti, mi amor 💞</h1>
     <p>
@@ -98,26 +138,34 @@
         Quiero que cada vez que la veas, recuerdes cuánto te amo 💖
     </p>
 
-    <button onclick="abrirSpotify()">🎵 Escuchar en Spotify</button>
+    <div class="controls">
+        <a class="spotify-btn" id="spotifyLink" href="https://open.spotify.com/track/35ttE4t8lQZA2vuCYDg4G7" target="_blank" rel="noopener noreferrer">
+            🔊 Escuchar en Spotify
+        </a>
+    </div>
 
     <script>
-        function abrirSpotify() {
-            window.open("https://open.spotify.com/track/35ttE4t8lQZA2vuCYDg4G7", "_blank");
-        }
-
-        // Generar corazones dinámicos
+        // Generar corazones dinámicos (decoración)
         const contenedor = document.querySelector('.corazones');
         function crearCorazon() {
-            const corazon = document.createElement('div');
-            corazon.classList.add('corazon');
-            corazon.innerHTML = '💖';
-            corazon.style.left = Math.random() * 100 + 'vw';
-            corazon.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            contenedor.appendChild(corazon);
-
-            setTimeout(() => corazon.remove(), 6000);
+            const c = document.createElement('div');
+            c.className = 'corazon';
+            c.textContent = '💖';
+            c.style.left = Math.random() * 100 + 'vw';
+            c.style.fontSize = (14 + Math.random()*28) + 'px';
+            c.style.animationDuration = (4 + Math.random()*4) + 's';
+            contenedor.appendChild(c);
+            setTimeout(() => c.remove(), 8000);
         }
-        setInterval(crearCorazon, 400);
+        setInterval(crearCorazon, 420);
+
+        // Pequeña animación visual al hacer clic en el botón (feedback)
+        const spotifyLink = document.getElementById('spotifyLink');
+        spotifyLink.addEventListener('click', () => {
+            spotifyLink.style.transform = 'translateY(-3px) scale(0.995)';
+            setTimeout(() => spotifyLink.style.transform = '', 220);
+        });
     </script>
 </body>
 </html>
+
